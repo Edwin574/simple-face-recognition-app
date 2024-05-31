@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+</head>
+<body>
+    <h1>Face Recognition</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+    <button id="trainButton">Train Model</button>
+    <button id="recognizeButton">Recognize Image</button>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => alert(data.result))
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('trainButton').addEventListener('click', function() {
+            fetch('/train/')
+            .then(response => response.json())
+            .then(data => alert(data.result))
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('recognizeButton').addEventListener('click', function() {
+            window.location.href = '/recognize/';
+        });
+    </script>
+</body>
+</html>
